@@ -1,0 +1,14 @@
+Vagrant plugin and puppet manifests for MongoDB
+===============================================
+
+Creates (by default) 3 virtual machines based on Ubuntu Lucid (64bits).
+Syncrhonizes their /ets/hosts files, and provisions them with MongoDB
+from the official 10gen repository (currently v2.0.6).
+
+Several new Vagrant configurations are available in the Vagrantfile
+to configure a MongoDB replicaset, such as the servers priority.
+
+A new Vagrant comand is availalbe to initialize the replicaset based on
+the configuration in the Vagrantfile.
+
+
