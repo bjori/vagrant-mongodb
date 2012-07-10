@@ -15,7 +15,7 @@ module VagrantMongo
       raise Vagrant::Errors::VMNotRunningError if @vm.state != :running
 
 
-      return unless @vm.mongo.rs
+      return unless @vm.config.mongo.rs
 
       cfg = make_cfg(@vm, @options)
 
@@ -26,8 +26,8 @@ module VagrantMongo
     def make_cfg(vm, options)
       members = []
       @env.vms.each do |name, subvm|
-        next is subvm.config.mongo == nil
-        next if subvm.config.mongo.rs != vm.mongo.rs
+        next if subvm.config.mongo == nil
+        next if subvm.config.mongo.rs != vm.config.mongo.rs
 
         member = {}
         c = subvm.config.mongo.to_hash
@@ -43,7 +43,7 @@ module VagrantMongo
 
         members.push(member)
       end
-      retval = { :_id => vm.mongo.rs, :members => members }
+      retval = { :_id => vm.config.mongo.rs, :members => members }
 
       retval
     end
