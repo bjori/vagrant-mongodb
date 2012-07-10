@@ -1,5 +1,7 @@
 include mongodb
-mongodb::replicaset { 'RS':
+mongodb::configure { $::rs_name:
+    arbiter => $::rs_arbiter,
+    useauth => $::mongo_auth,
     #rest => true
 }
 

@@ -15,31 +15,35 @@ module VagrantMongo
       raise Vagrant::Errors::VMNotRunningError if @vm.state != :running
 
 
-      cfg = make_cfg(@options)
+      return unless @vm.mongo.rs
+
+      cfg = make_cfg(@vm, @options)
 
       reconfig_rs(cfg) if replicaset_initialized?
       init_replicaset(cfg) unless replicaset_initialized?
     end
 
-    def make_cfg(options)
+    def make_cfg(vm, options)
       members = []
       @env.vms.each do |name, subvm|
-        member = {}
-        if subvm.config.mongo
-          c = subvm.config.mongo.to_hash
-          member[:_id] = c[:rs][:id]
-          member[:host] = subvm.config.vm.host_name
+        next is subvm.config.mongo == nil
+        next if subvm.config.mongo.rs != vm.mongo.rs
 
-          if subvm.config.mongo.priority
-            member[:priority] = subvm.config.mongo.priority
-          end
-          if subvm.config.mongo.arbiter
-            member[:arbiterOnly] = true
-          end
+        member = {}
+        c = subvm.config.mongo.to_hash
+        member[:_id] = c[:rs][:id]
+        member[:host] = subvm.config.vm.host_name
+
+        if subvm.config.mongo.priority
+          member[:priority] = subvm.config.mongo.priority
         end
+        if subvm.config.mongo.arbiter
+          member[:arbiterOnly] = true
+        end
+
         members.push(member)
       end
-      retval = { :_id => "RS", :members => members }
+      retval = { :_id => vm.mongo.rs, :members => members }
 
       retval
     end

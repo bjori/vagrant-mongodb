@@ -1,60 +1,45 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
+# vi: set ft=ruby sw=2 :
 
 require './vagrant-mongo/lib/vagrant_init.rb'
 
 Vagrant::Config.run do |config|
 
-    config.vm.define :primary do |primary|
-        primary.vm.box = "replicaset"
-        primary.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+  config.vm.box = "replicaset"
+  config.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file  = "replicaset.pp"
+    puppet.module_path    = "puppet/modules"
+  end
 
-        primary.vm.network :hostonly, "172.16.1.10"
-        primary.vm.host_name = "primary.rs.local"
+  config.mongo.rs       = "RS"
+  config.mongo.auth     = "random string"
 
-        primary.vm.provision :puppet do |puppet|
-            puppet.manifests_path = "puppet/manifests"
-            puppet.manifest_file  = "replicaset.pp"
-            puppet.module_path    = "puppet/modules"
-        end
+  config.vm.define :primary do |primary|
+    primary.vm.network :hostonly, "172.16.1.10"
+    primary.vm.host_name = "primary.rs.local"
 
-        primary.mongo.id       = 0
-        primary.mongo.priority = 20
-    end
+    primary.mongo.id       = 0
+    primary.mongo.priority = 20
 
-    config.vm.define :secondary do |secondary|
-        secondary.vm.box = "replicaset"
-        secondary.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+  end
 
-        secondary.vm.network :hostonly, "172.16.1.11"
-        secondary.vm.host_name = "secondary.rs.local"
+  config.vm.define :secondary do |secondary|
+    secondary.vm.network :hostonly, "172.16.1.11"
+    secondary.vm.host_name = "secondary.rs.local"
 
-        secondary.vm.provision :puppet do |puppet|
-            puppet.manifests_path = "puppet/manifests"
-            puppet.manifest_file  = "replicaset.pp"
-            puppet.module_path    = "puppet/modules"
-        end
-
-        secondary.mongo.id       = 1
-        secondary.mongo.priority = 10
+    secondary.mongo.id       = 1
+    secondary.mongo.priority = 10
   end
 
 
   config.vm.define :tertiary do |tertiary|
-      tertiary.vm.box = "replicaset"
-      tertiary.vm.box_url = "http://files.vagrantup.com/lucid64.box"
+    tertiary.vm.network :hostonly, "172.16.1.12"
+    tertiary.vm.host_name = "tertiary.rs.local"
 
-      tertiary.vm.network :hostonly, "172.16.1.12"
-      tertiary.vm.host_name = "tertiary.rs.local"
-
-      tertiary.vm.provision :puppet do |puppet|
-          puppet.manifests_path = "puppet/manifests"
-          puppet.manifest_file  = "replicaset.arbiter.pp"
-          puppet.module_path    = "puppet/modules"
-      end
-
-      tertiary.mongo.id      = 2
-      tertiary.mongo.arbiter = true
+    tertiary.mongo.id      = 2
+    tertiary.mongo.arbiter = true
   end
 
 

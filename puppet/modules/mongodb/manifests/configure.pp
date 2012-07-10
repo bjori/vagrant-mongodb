@@ -1,7 +1,7 @@
-define mongodb::replicaset (
+define mongodb::configure (
     $replSet    = $title,
     $arbiter    = 'false',
-    $auth       = 'false',
+    $useauth    = 'false',
     $rest       = '',
     $prealloc = '',
     $journal  = '',
@@ -27,6 +27,22 @@ define mongodb::replicaset (
         }
     }
 
+    if ($useauth == 'false'){
+        $auth = 'false'
+    } else {
+        $auth = 'true'
+        if ($replSet != '') {
+            $keyFile = "/etc/mongodb.key"
+        }
+    }
+
+    file { '/etc/mongodb.key':
+        content => template('mongodb/mongodb.key.erb'),
+        mode => '0600',
+        owner => 'mongodb',
+        notify => Service['mongodb'],
+        require => Package['mongodb-10gen'],
+    }
     file { '/etc/mongodb.conf':
         content => template('mongodb/mongodb.conf.erb'),
         mode => '0644',

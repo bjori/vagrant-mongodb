@@ -4,15 +4,19 @@ module VagrantMongo
     attr_accessor :id
     attr_accessor :priority
     attr_accessor :arbiter
+    attr_accessor :rs
+    attr_accessor :auth
 
 
     def to_hash
         {
             :rs => {
                 :id => id,
-                :priority => priority
+                :priority => priority,
+                :name => rs,
+                :arbiter => arbiter
             },
-            :arbiter => arbiter
+            :auth => auth
         }
     end
 
