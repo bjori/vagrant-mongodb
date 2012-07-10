@@ -41,19 +41,19 @@ define mongodb::configure (
         mode => '0600',
         owner => 'mongodb',
         notify => Service['mongodb'],
-        require => Package['mongodb-10gen'],
+        require => File['/etc/mongodb.conf'],
     }
     file { '/etc/mongodb.conf':
         content => template('mongodb/mongodb.conf.erb'),
         mode => '0644',
         notify => Service['mongodb'],
-        require => Package['mongodb-10gen'],
+        require => File['/etc/default/mongodb'],
     }
     file { '/etc/default/mongodb':
         content => template('mongodb/mongodb.upstart.default.erb'),
         mode => '0644',
         notify => Service['mongodb'],
-        require => Package['mongodb-10gen'],
+        require => File['/etc/init/mongodb.conf'],
     }
     file { '/etc/init/mongodb.conf':
         content => template('mongodb/mongodb.upstart.conf.erb'),

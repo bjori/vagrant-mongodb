@@ -31,7 +31,7 @@ class mongodb {
     service { "mongodb":
         enable => true,
         ensure => running,
-        require => Package["mongodb-10gen"],
+        require => File['/etc/mongodb.key'],
     }
 
 }
