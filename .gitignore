@@ -1,1 +1,2 @@
 .vagrant
+puppet/modules/hosts/manifests/generated.pp

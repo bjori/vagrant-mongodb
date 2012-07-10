@@ -12,9 +12,10 @@ Vagrant.config_keys.register(:mongo) { VagrantMongo::Config }
 #Vagrant.actions[:start].insert_before Vagrant::Action::VM::Provision, VagrantMongo::Middleware::ReplicaSet
 
 # This will inject a 'fact' with the ReplicaSet name so we can pass the apropriate arguments to mongod
-#Vagrant.actions[:start].insert_after Vagrant::Action::VM::Provision, VagrantMongo::Middleware::Facter
 Vagrant.actions[:provision].insert_before Vagrant::Action::VM::Provision, VagrantMongo::Middleware::Facter
+Vagrant.actions[:provision].insert_before Vagrant::Action::VM::Provision, VagrantMongo::Middleware::Hosts
 Vagrant.actions[:start].insert_after Vagrant::Action::VM::Provision, VagrantMongo::Middleware::Facter
+Vagrant.actions[:start].insert_after Vagrant::Action::VM::Provision, VagrantMongo::Middleware::Hosts
 
 Vagrant.commands.register(:mongo) { VagrantMongo::Command::Mongo }
 
