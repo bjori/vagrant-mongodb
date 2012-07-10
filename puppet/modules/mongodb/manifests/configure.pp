@@ -1,5 +1,5 @@
 define mongodb::configure (
-    $replSet    = $title,
+    $replicaset    = $title,
     $arbiter    = 'false',
     $useauth    = 'false',
     $rest       = '',
@@ -29,10 +29,14 @@ define mongodb::configure (
 
     if ($useauth == 'false'){
         $auth = 'false'
+        $replSet = false
     } else {
         $auth = 'true'
-        if ($replSet != '') {
+        if ($replicaset) {
+            $replSet = $replicaset
             $keyFile = "/etc/mongodb.key"
+        } else {
+            $replSet = false
         }
     }
 

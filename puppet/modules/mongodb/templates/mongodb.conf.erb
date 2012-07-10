@@ -84,7 +84,7 @@ noprealloc = <%= noprealloc %>
 
 # in replica set configuration, specify the name of the replica set
 # replSet = setname 
-<% if replSet != '' -%>
+<% if replSet -%>
     replSet = <%=replSet%>
     <% if auth != 'false' -%>
       keyFile = /etc/mongodb.key
