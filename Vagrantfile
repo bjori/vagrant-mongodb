@@ -13,9 +13,9 @@ Vagrant::Config.run do |config|
         primary.vm.host_name = "primary.rs.local"
 
         primary.vm.provision :puppet do |puppet|
-            puppet.manifests_path = "manifests"
+            puppet.manifests_path = "puppet/manifests"
             puppet.manifest_file  = "replicaset.pp"
-            puppet.module_path    = "modules"
+            puppet.module_path    = "puppet/modules"
         end
 
         primary.mongo.id       = 0
@@ -30,9 +30,9 @@ Vagrant::Config.run do |config|
         secondary.vm.host_name = "secondary.rs.local"
 
         secondary.vm.provision :puppet do |puppet|
-            puppet.manifests_path = "manifests"
+            puppet.manifests_path = "puppet/manifests"
             puppet.manifest_file  = "replicaset.pp"
-            puppet.module_path    = "modules"
+            puppet.module_path    = "puppet/modules"
         end
 
         secondary.mongo.id       = 1
@@ -48,9 +48,9 @@ Vagrant::Config.run do |config|
       tertiary.vm.host_name = "tertiary.rs.local"
 
       tertiary.vm.provision :puppet do |puppet|
-          puppet.manifests_path = "manifests"
+          puppet.manifests_path = "puppet/manifests"
           puppet.manifest_file  = "replicaset.arbiter.pp"
-          puppet.module_path    = "modules"
+          puppet.module_path    = "puppet/modules"
       end
 
       tertiary.mongo.id      = 2
