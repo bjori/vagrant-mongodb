@@ -18,7 +18,7 @@ module VagrantMongo
       command = 'db.getSiblingDB("' + db + '").addUser("' + options[:username]+ '", "' + options[:password] +'")'
 
       if options[:authuser]
-          options[:authdb] = options[:database] || "admin"
+          options[:authdb] = options[:authdb] || "admin"
         auth = ' --username ' + options[:authuser] + ' --password ' + options[:authpass] + ' localhost/' + options[:authdb] + ' '
       else
         auth = ""
