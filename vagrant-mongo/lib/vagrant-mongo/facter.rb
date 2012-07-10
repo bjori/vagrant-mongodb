@@ -11,7 +11,6 @@ module VagrantMongo
       def call(env)
 
         options = @vm.config.mongo.to_hash
-        puts options
 
         @env[:vm].config.vm.provisioners.each do |provisioner|
           if provisioner.shortcut.to_s == "puppet"
