@@ -12,7 +12,7 @@ module VagrantMongo
         @app.call(env)
 
         options = @vm.config.mongo.to_hash
-        VagrantMongo::Configure.new(@vm.env, @vm, options).run
+        VagrantMongo::Configure.new(@vm.env, @vm, options).initReplicaset
       end
 
     end

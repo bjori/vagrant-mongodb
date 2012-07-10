@@ -9,7 +9,30 @@ module VagrantMongo
       @options = options
     end
 
-    def run
+    def createUser(options)
+      return unless is_master?
+
+      puts options
+      db = options[:database] || "admin"
+
+      command = 'db.getSiblingDB("' + db + '").addUser("' + options[:username]+ '", "' + options[:password] +'")'
+
+      if options[:authuser]
+          options[:authdb] = options[:database] || "admin"
+        auth = ' --username ' + options[:authuser] + ' --password ' + options[:authpass] + ' localhost/' + options[:authdb] + ' '
+      else
+        auth = ""
+      end
+
+
+      cmd = "mongo " + auth + " --eval '" + command + "'"
+      @vm.channel.execute(cmd) do |type, data|
+        @vm.ui.info(data, :prefix => false, :new_line => false)
+      end
+
+    end
+
+    def initReplicaset
       raise Vagrant::Errors::VMNotCreatedError if !@vm.created?
       raise Vagrant::Errors::VMInaccessible if !@vm.state == :inaccessible
       raise Vagrant::Errors::VMNotRunningError if @vm.state != :running
