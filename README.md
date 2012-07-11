@@ -3,20 +3,20 @@ Vagrant plugin and puppet manifests for MongoDB
 
 Creates (by default) 8 virtual machines based on Ubuntu Lucid (64bits).
 
-1x ReplicaSet (primary, secondary, arbiter) without authentication.
-1x ReplicaSet (primary, secondary, arbiter) wit authentication.
-1x Standalone server without authentication.
-1x Standalone server with authentication.
+* 1x ReplicaSet (primary, secondary, arbiter) without authentication.
+* 1x ReplicaSet (primary, secondary, arbiter) wit authentication.
+* 1x Standalone server without authentication.
+* 1x Standalone server with authentication.
 
-The ReplicaSet servers will have their /etc/hosts synchronized among them.
+The ReplicaSet servers will have their _/etc/hosts_ synchronized among them.
 
-All servers will retrieve and install the latest MongoDB from the 10gen repository.
+All servers will retrieve and install the latest MongoDB from the official 10gen repository.
 
-Several new Vagrant configurations are available in the Vagrantfile
+Several new Vagrant configurations are available in the _Vagrantfile_
 to configure a MongoDB replicaset, such as the servers priority.
 
 A new Vagrant comand is availalbe to initialize the replicaset based on
-the configuration in the Vagrantfile, and to create users for authenticated setup.
+the configuration in the _Vagrantfile_, and to create users for authenticated setup.
 
 
 Usage
@@ -38,28 +38,33 @@ To initialize the ReplicaSet for the first time, type
 
     $ vagrant mongo primary --init-replicaset
 
-or
+and/or
 
     $ vagrant mongo primaryauth --init-replicaset
+
+To initialize the ReplicaSet for the authenticated environment.
 
 Creating users
 --------------
 
 To create a first time admin user on a standalone server run
+
     $ vagrant mongo standaloneauth -c -u adm -p pass --db admin
 
 or for ReplicaSet environment
+
     $ vagrant mongo primaryauth -c -u adm -p pass --db admin
 
 To create more users you have to authenticate using that admin user
+
     $ vagrant mongo standaloneauth -c -u user -p mypass --db mydb --authuser adm --authpass pass --authdb admin
 
 
 /etc/hosts
 ----------
 
-The ReplicaSets are configured using the hostnames defined in the Vagrantfile.
-I recommend you add all these hosts to your local /etc/hosts (the servers themselfs already have).
+The ReplicaSets are configured using the hostnames defined in the _Vagrantfile_.
+I recommend you add all these hosts to your local _/etc/hosts_ (the servers themselves already have).
 
 By default the following hostnames and IPs are used
 
