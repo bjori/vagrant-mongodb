@@ -4,7 +4,7 @@ Vagrant plugin and puppet manifests for MongoDB
 Creates (by default) 8 virtual machines based on Ubuntu Lucid (64bits).
 
 * 1x ReplicaSet (primary, secondary, arbiter) without authentication.
-* 1x ReplicaSet (primary, secondary, arbiter) wit authentication.
+* 1x ReplicaSet (primary, secondary, arbiter) with authentication.
 * 1x Standalone server without authentication.
 * 1x Standalone server with authentication.
 
@@ -13,7 +13,7 @@ The ReplicaSet servers will have their _/etc/hosts_ synchronized among them.
 All servers will retrieve and install the latest MongoDB from the official 10gen repository.
 
 Several new Vagrant configurations are available in the _Vagrantfile_
-to configure a MongoDB replicaset, such as the servers priority.
+to configure a MongoDB replicaset, such as the servers priority to become primaries.
 
 A new Vagrant comand is availalbe to initialize the replicaset based on
 the configuration in the _Vagrantfile_, and to create users for authenticated setup.
@@ -23,14 +23,27 @@ Usage
 -----
     $ git clone https://github.com/bjori/vagrant-mongodb-replicaset.git
     $ cd vagrant-mongodb-replicaset
+
+Boot up *all* servers
+
     $ vagrant up # Will bootup *all 8 servers*
 
-Or only bootup the things you want to run
+Or only bootup a normal ReplicaSet
 
     $ vagrant up primary secondary tertiary # Will bootup only one ReplicaSet
+
+To bootup ReplicaSet with authentication enabled
+
     $ vagrant up primaryauth secondaryauth tertiaryauth # RS with auth
+
+Don't want ReplicaSets? This will create a standalone MongoDB server
+
     $ vagrant up standalone # Will bootup the standalone server
+
+And this will create a standalone MongoDB server with authentication enabled
+
     $ vagrant up standaloneauth # Standalone with auth
+
 
 Initializing ReplicaSets
 ------------------------
@@ -43,6 +56,7 @@ and/or
     $ vagrant mongo primaryauth --init-replicaset
 
 To initialize the ReplicaSet for the authenticated environment.
+
 
 Creating users
 --------------
