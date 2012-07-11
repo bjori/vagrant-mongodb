@@ -14,7 +14,7 @@ Vagrant::Config.run do |config|
   # Use puppet, and the replicaset.pp manifest
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
-    puppet.manifest_file  = "replicaset.pp"
+    puppet.manifest_file  = "mongo.pp"
     puppet.module_path    = "puppet/modules"
   end
 
