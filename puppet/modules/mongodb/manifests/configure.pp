@@ -29,7 +29,11 @@ define mongodb::configure (
 
     if ($useauth == 'false'){
         $auth = 'false'
-        $replSet = false
+        if ($replicaset) {
+            $replSet = $replicaset
+        } else {
+            $replSet = false
+        }
     } else {
         $auth = 'true'
         if ($replicaset) {
