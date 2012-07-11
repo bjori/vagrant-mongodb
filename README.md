@@ -21,8 +21,8 @@ the configuration in the _Vagrantfile_, and to create users for authenticated se
 
 Usage
 -----
-    $ git clone https://github.com/bjori/vagrant-mongodb-replicaset.git
-    $ cd vagrant-mongodb-replicaset
+    $ git clone https://github.com/bjori/vagrant-mongodb.git
+    $ cd vagrant-mongodb
 
 Boot up *all* servers
 
